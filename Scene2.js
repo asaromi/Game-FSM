@@ -130,7 +130,7 @@ class Scene2 extends Phaser.Scene {
             this.monster.x = -1000;
             
             this.destroy = this.add.sprite(posA, this.monster.y, "explosion2");
-            this.destroy.setOrigin(this.monster.originX, this.monster.originY);
+            this.destroy.setOrigin(0, 0);
             this.destroy.play("destroy").anims.setTimeScale(0.4);
             console.log(this.destroy.x);
             
