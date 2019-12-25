@@ -89,8 +89,8 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({
             key: "destroy",
             frames: this.anims.generateFrameNumbers("explosion2"),
-            delay: 300,
-            frameRate: 20,
+            delay: 200,
+            frameRate: 5,
             repeat: 0,
             hideOnComplete: true
         });
@@ -98,7 +98,7 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({
             key: "fire",
             frames: this.anims.generateFrameNumbers("attack"),
-            frameRate: 20,
+            frameRate: 5,
             repeat: 0,
             hideOnComplete: true
         });
