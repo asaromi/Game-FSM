@@ -11,7 +11,6 @@ class Scene2 extends Phaser.Scene {
         
         this.monster = this.add.image(1000, 0, "monster");
         this.monster.setOrigin(0,0);
-        console.log("Godzilla : "+this.monster.x+"; "+this.monster.y);
 
         this.ship1 = this.add.sprite(0, 272*4/5, "ship1");
         
@@ -93,8 +92,9 @@ class Scene2 extends Phaser.Scene {
     moveMonster(speed){
         if(this.monster.x > (484-298)){
             this.monster.x -= speed;
-            console.log("Godzilla : "+this.monster.x+"; "+this.monster.y);
+            
         } else {
+            console.log("Godzilla : "+this.monster.x+"; "+this.monster.y);
             this.ship1.x = -100;
             this.ship2.x = -100;
             this.ship3.x = -100;
@@ -126,7 +126,6 @@ class Scene2 extends Phaser.Scene {
         if(this.superPlayer){
             var posA = this.monster.x;
             var posB = this.super.x;
-            
             this.monster.x = -1000;
             
             this.destroy = this.add.sprite(posA, this.monster.y, "explosion2");
@@ -134,14 +133,21 @@ class Scene2 extends Phaser.Scene {
             this.destroy.play("destroy").anims.setTimeScale(0.4);
             console.log(this.destroy.x);
             
-            this.shootFire();
+            this.super.setCollideWorldBounds(false);
+            this.super.x = -1000;
+            this.fire = this.add.sprite(posB, this.super.y, "attack");
+            this.shootFire(this.fire);
+            if(!this.fire.active){
+                console.log("super : "+this.super.x);
+                this.super.setCollideWorldBounds(true);
+                this.super.x = posB;
+            }
         }
     }
 
-    shootFire(){
-        this.fire = this.add.sprite(posB, this.super.y, "attack");
-        this.fire.setOrigin(0, 0.5);
-        this.fire.play("fire").anims.setTimeScale(0.5);
+    shootFire(fire){
+        fire.setOrigin(0, 0.5);
+        fire.play("fire").anims.setTimeScale(0.5);
     }
 
     
