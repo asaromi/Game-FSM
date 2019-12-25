@@ -134,14 +134,14 @@ class Scene2 extends Phaser.Scene {
             this.destroy.play("destroy").anims.setTimeScale(0.4);
             console.log(this.destroy.x);
             
-
-            this.fire = this.add.sprite(posB, this.super.y, "attack");
-            this.fire.setOrigin(0, 0.5);
-            this.fire.play("fire").anims.setTimeScale(0.5);
-            
-
-            
+            this.shootFire();
         }
+    }
+
+    shootFire(){
+        this.fire = this.add.sprite(posB, this.super.y, "attack");
+        this.fire.setOrigin(0, 0.5);
+        this.fire.play("fire").anims.setTimeScale(0.5);
     }
 
     
