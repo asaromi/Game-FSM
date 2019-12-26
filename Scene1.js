@@ -51,8 +51,25 @@ class Scene1 extends Phaser.Scene {
             frameWidth: 298,
             frameHeight: 272
         });
-        
+
+        this.load.spritesheet("opening", "assets/spritesheets/open.png", {
+            frameWidth: 300,
+            frameHeight: 72
+        });
+
+        this.load.spritesheet("lose", "assets/spritesheets/gameOver.png", {
+            frameWidth: 341.3,
+            frameHeight: 95
+        });
+
+        this.load.spritesheet("win", "assets/spritesheets/youWin.png", {
+            frameWidth: 315.3,
+            frameHeight: 97
+        });
+
         this.load.audio("kmhmh", ["assets/audio/kmehameha.mp3"]);
+
+        this.load.audio("soundtrack",["assets/audio/DB.ogg"])
     }
 
     create() {
@@ -105,10 +122,39 @@ class Scene1 extends Phaser.Scene {
             repeat: 0,
             hideOnComplete: true
         });
+
+        this.anims.create({
+            key: "youWin",
+            frames: this.anims.generateFrameNumbers("win"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "youLose",
+            frames: this.anims.generateFrameNumbers("lose"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.anims.create({
+            key: "openingGame",
+            frames: this.anims.generateFrameNumbers("opening"),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        this.gameStart = this.add.sprite(484/2, 272/2, "opening");
+        this.gameStart.setOrigin(0.5,0.5);
+
+        this.gameStart.play("openingGame");
+
+        this.backSound = this.sound.add("soundtrack");
     }
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(this.spacebare)){
+            this.backSound.play();
             this.scene.start("playGame");
             console.log("Game Start");
         }
