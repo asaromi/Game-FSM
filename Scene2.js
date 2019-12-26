@@ -124,24 +124,21 @@ class Scene2 extends Phaser.Scene {
     destroyMonster(){
         console.log(this.monster.x);
         if(this.superPlayer){
-            var posA = this.monster.x;
-            var posB = this.super.x;
-            this.monster.x = -1000;
+            var posXM = this.monster.x;
+            var posYM = this.monster.y;
+            var posXS = this.super.x;
+            var posYS = this.super.y;
+
+            this.monster.destroy();
             
-            this.destroy = this.add.sprite(posA, this.monster.y, "explosion2");
-            this.destroy.setOrigin(this.monster.originX, this.monster.originY);
+            this.destroy = this.add.sprite(posXM, posYM, "explosion2");
+            this.destroy.setOrigin(0, 0);
             this.destroy.play("destroy").anims.setTimeScale(0.4);
-            console.log(this.destroy.x);
             
-            this.super.setCollideWorldBounds(false);
-            this.super.x = -1000;
-            this.fire = this.add.sprite(posB, this.super.y, "attack");
+            this.super.destroy();
+
+            this.fire = this.add.sprite(posXS, posYS, "attack");
             this.shootFire(this.fire);
-            if(!this.fire.active){
-                console.log("super : "+this.super.x);
-                this.super.setCollideWorldBounds(true);
-                this.super.x = posB;
-            }
         }
     }
 
@@ -149,8 +146,6 @@ class Scene2 extends Phaser.Scene {
         fire.setOrigin(0, 0.5);
         fire.play("fire").anims.setTimeScale(0.5);
     }
-
-    
 
     movePlayerManager(){
         if(this.cursorKeys.up.isDown){
