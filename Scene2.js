@@ -49,7 +49,7 @@ class Scene2 extends Phaser.Scene {
         
 
         // add Power-up items
-        
+        this.fireSound = this.sound.add("kmhmh");
 
         
         // this.super.play("nos");
@@ -71,7 +71,7 @@ class Scene2 extends Phaser.Scene {
 
         this.physics.add.overlap(this.player, this.enemies, function(player, enemies){
             player.destroy();
-            this.scene.pause("playGame");
+             
         }, null, this);
 
     }
@@ -145,7 +145,8 @@ class Scene2 extends Phaser.Scene {
             
             this.destroy = this.add.sprite(this.posXM, this.posYM, "explosion2");
             this.destroy.setOrigin(0, 0);
-            this.destroy.play("destroy").anims.setTimeScale(0.4);
+            this.destroy.play("destroy").anims.setTimeScale(0.2);
+            
             
             this.super.destroy();
 
@@ -161,7 +162,8 @@ class Scene2 extends Phaser.Scene {
 
     shootFire(fire){
         fire.setOrigin(0, 0.5);
-        fire.play("fire").anims.setTimeScale(0.5);
+        fire.play("fire").anims.setTimeScale(0.3);
+        this.fireSound.play();
     }
 
     movePlayerManager(){
