@@ -2,14 +2,15 @@ class Scene2 extends Phaser.Scene {
     constructor(){
         super("playGame");
         var superPlayer = false;
+        var posXM = 0, posYM = 0, posXS = 0, posYS = 0;
     }
 
     create() {
-        
+
         this.background = this.add.tileSprite(0,0,484,272,"background");
         this.background.setOrigin(0,0);
         
-        this.monster = this.add.image(1000, 0, "monster");
+        this.monster = this.add.sprite(1000, 0, "monster");
         this.monster.setOrigin(0,0);
 
         this.ship1 = this.add.sprite(0, 272*4/5, "ship1");
@@ -51,7 +52,7 @@ class Scene2 extends Phaser.Scene {
         this.ship2.play("ship2_anim");
         this.ship3.play("ship3_anim");
 
-        
+        this.monster.setInteractive();
         this.ship1.setInteractive();
         this.ship2.setInteractive();
         this.ship3.setInteractive();
@@ -93,11 +94,11 @@ class Scene2 extends Phaser.Scene {
         if(this.monster.x > (484-298)){
             this.monster.x -= speed;
             
-        } else {
+        } else if(this.monster.x == (484-298)) {
             console.log("Godzilla : "+this.monster.x+"; "+this.monster.y);
-            this.ship1.x = -100;
-            this.ship2.x = -100;
-            this.ship3.x = -100;
+            this.ship1.destroy();
+            this.ship2.destroy();
+            this.ship3.destroy();
         }
     }
 
@@ -105,9 +106,7 @@ class Scene2 extends Phaser.Scene {
         if(this.super.setCollideWorldBounds != true){
             var posA = this.player.x;
             var posB = this.player.y;
-            this.player.setCollideWorldBounds(false);
-            this.player.x = -1000;
-            this.player.y = 0;
+            this.player.destroy();
 
             this.super.x = posA;
             this.super.y = posB;
@@ -124,21 +123,27 @@ class Scene2 extends Phaser.Scene {
     destroyMonster(){
         console.log(this.monster.x);
         if(this.superPlayer){
-            var posXM = this.monster.x;
-            var posYM = this.monster.y;
-            var posXS = this.super.x;
-            var posYS = this.super.y;
+            this.posXM = this.monster.x;
+            this.posYM = this.monster.y;
+            this.posXS = this.super.x;
+            this.posYS = this.super.y;
 
+            this.monster.x = -1000;
             this.monster.destroy();
             
-            this.destroy = this.add.sprite(posXM, posYM, "explosion2");
+            this.destroy = this.add.sprite(this.posXM, this.posYM, "explosion2");
             this.destroy.setOrigin(0, 0);
             this.destroy.play("destroy").anims.setTimeScale(0.4);
             
             this.super.destroy();
 
-            this.fire = this.add.sprite(posXS, posYS, "attack");
+            this.fire = this.add.sprite(this.posXS, this.posYS, "attack");
             this.shootFire(this.fire);
+            this.superPlayer = false;
+        } else if (!this.superPlayer){
+            console.log("Berhasil, membuat player baru");
+            this.super = this.physics.add.image(this.posXS, this.posYS, "su-player");
+            this.super.setCollideWorldBounds(true);
         }
     }
 
@@ -148,13 +153,14 @@ class Scene2 extends Phaser.Scene {
     }
 
     movePlayerManager(){
-        if(this.cursorKeys.up.isDown){
-            this.player.setVelocityY(-100);
-            
-        } else if(this.cursorKeys.down.isDown){
-            this.player.setVelocityY(100);
-            
-        } else if(this.superPlayer){
+        if(!this.superPlayer && this.super.x < 0){
+            if(this.cursorKeys.up.isDown){
+                this.player.setVelocityY(-100);
+                
+            } else if(this.cursorKeys.down.isDown){
+                this.player.setVelocityY(100);
+            }  
+        } else{
             if(this.cursorKeys.right.isDown){
                 this.super.setVelocityX(100);
                 console.log("Superman : "+this.super.x+"; "+this.super.y);
@@ -162,6 +168,10 @@ class Scene2 extends Phaser.Scene {
                 this.super.setVelocityX(-100);
             }
         }
+    }
+
+    callSuperBack(){
+        this.super = this.physics.add.image(this.posXS, this.posYS, "su-player");
     }
 
     update(){
@@ -176,21 +186,19 @@ class Scene2 extends Phaser.Scene {
         //     this.resetShipPos(this.ship1);
         // }
         this.moveMonster(1);
-        if(this.monster.x == 254 && !this.superPlayer){
+        if(this.monster.x == 186 && this.super.x < 0){
             console.log("Press Space Bar to Get Super Power. And go to Left to kill Monster");
-        } else if(this.monster.x == 254 && (this.monster.x == this.super.x)) {
-            console.log("Destroy Monster");
-        }
+            if(Phaser.Input.Keyboard.JustDown(this.spacebare)){
+                console.log("Fire!");
+                this.changePlayer();
+            }
+        } 
 
         this.moveShipLeft(this.ship3, 2);
         this.moveShipLeft(this.ship1, 1);
         this.moveShipLeft(this.ship2, 3);
         this.movePlayerManager();
         
-        if(Phaser.Input.Keyboard.JustDown(this.spacebare)){
-            console.log("Fire!");
-            this.changePlayer();
-        }
 
         this.background.tilePositionX += 1;
     }
