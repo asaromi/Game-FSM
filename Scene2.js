@@ -25,6 +25,11 @@ class Scene2 extends Phaser.Scene {
         this.ship3 = this.add.sprite(256/8, 272/2, "ship3");
         this.ship3.setOrigin(1,0);
         
+        this.enemies = this.physics.add.group();
+        this.enemies.add(this.ship1);
+        this.enemies.add(this.ship2);
+        this.enemies.add(this.ship3);
+
 
         //this.man1 = this.add.image(256/4, 272/4, "man1");
         //this.man1.setScale(2);
@@ -63,6 +68,12 @@ class Scene2 extends Phaser.Scene {
         //     font: "25px Arial",
         //     fill: "yellow"
         // });
+
+        this.physics.add.overlap(this.player, this.enemies, function(player, enemies){
+            player.destroy();
+            this.scene.pause("playGame");
+        }, null, this);
+
     }
 
     
@@ -130,6 +141,7 @@ class Scene2 extends Phaser.Scene {
 
             this.monster.x = -1000;
             this.monster.destroy();
+            this.superPlayer = false;
             
             this.destroy = this.add.sprite(this.posXM, this.posYM, "explosion2");
             this.destroy.setOrigin(0, 0);
@@ -139,7 +151,7 @@ class Scene2 extends Phaser.Scene {
 
             this.fire = this.add.sprite(this.posXS, this.posYS, "attack");
             this.shootFire(this.fire);
-            this.superPlayer = false;
+            
         } else if (!this.superPlayer){
             console.log("Berhasil, membuat player baru");
             this.super = this.physics.add.image(this.posXS, this.posYS, "su-player");
@@ -160,7 +172,7 @@ class Scene2 extends Phaser.Scene {
             } else if(this.cursorKeys.down.isDown){
                 this.player.setVelocityY(100);
             }  
-        } else{
+        } else if(this.superPlayer){
             if(this.cursorKeys.right.isDown){
                 this.super.setVelocityX(100);
                 console.log("Superman : "+this.super.x+"; "+this.super.y);
