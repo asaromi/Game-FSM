@@ -5,7 +5,6 @@ class Scene1 extends Phaser.Scene {
 
     preload(){
         this.load.image("background", "assets/img/bground.png");
-        this.load.image("monster", "assets/img/godzilla.png");
         
         // load player : assets/img
         this.load.image("player", "assets/img/man1.png");
@@ -22,6 +21,11 @@ class Scene1 extends Phaser.Scene {
         //this.load.image("ship1", "assets/img/ship.png");
         //this.load.image("ship2", "assets/img/ship2.png");
         //this.load.image("ship3", "assets/img/ship3.png");
+
+        this.load.spritesheet("monster", "assets/img/godzilla.png", {
+            frameWidth: 298,
+            frameHeight: 272
+        });
 
         this.load.spritesheet("ship1", "assets/spritesheets/ship.png",{
             frameWidth: 16,
@@ -52,10 +56,9 @@ class Scene1 extends Phaser.Scene {
 
     create() {
         this.add.text(20, 20, "Loading game...");
-        this.scene.start("playGame");
-            
         
-
+        this.scene.start("playGame");
+        
         this.anims.create({
             key: "ship1_anim",
             frames: this.anims.generateFrameNumbers("ship1"),
@@ -89,8 +92,8 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({
             key: "destroy",
             frames: this.anims.generateFrameNumbers("explosion2"),
-            delay: 300,
-            frameRate: 20,
+            delay: 200,
+            frameRate: 5,
             repeat: 0,
             hideOnComplete: true
         });
@@ -98,7 +101,7 @@ class Scene1 extends Phaser.Scene {
         this.anims.create({
             key: "fire",
             frames: this.anims.generateFrameNumbers("attack"),
-            frameRate: 20,
+            frameRate: 5,
             repeat: 0,
             hideOnComplete: true
         });

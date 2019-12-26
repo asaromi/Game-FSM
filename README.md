@@ -1,1 +1,2 @@
-# GAME implementing Finite State Machine
+# Kadal Langit
+> Sebuah game yang memanfaatkan Finite State Machine
