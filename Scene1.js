@@ -56,9 +56,8 @@ class Scene1 extends Phaser.Scene {
 
     create() {
         this.add.text(20, 20, "Loading game...");
-        
-        this.scene.start("playGame");
-        
+        this.spacebare = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
         this.anims.create({
             key: "ship1_anim",
             frames: this.anims.generateFrameNumbers("ship1"),
@@ -105,5 +104,12 @@ class Scene1 extends Phaser.Scene {
             repeat: 0,
             hideOnComplete: true
         });
+    }
+
+    update(){
+        if(Phaser.Input.Keyboard.JustDown(this.spacebare)){
+            this.scene.start("playGame");
+            console.log("Game Start");
+        }
     }
 }
