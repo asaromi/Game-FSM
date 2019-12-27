@@ -68,7 +68,8 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.load.audio("kmhmh", ["assets/audio/kmehameha.mp3"]);
-    }
+        this.load.audio("gameOver", ["assets/audio/game-over.mp3"]);
+        this.load.audio("winGame", ["assets/audio/game-clear.mp3"]);    }
 
     create() {
         this.add.text(20, 20, "Loading game...");
