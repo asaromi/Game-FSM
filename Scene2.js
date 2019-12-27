@@ -45,7 +45,8 @@ class Scene2 extends Phaser.Scene {
 
         // add Power-up items
         this.fireSound = this.sound.add("kmhmh");
-
+        this.gameOver = this.sound.add("gameOver");
+        this.winGame = this.sound.add("winGame");
 
         // this.super.play("nos");
         this.ship1.play("ship1_anim");
@@ -192,12 +193,14 @@ class Scene2 extends Phaser.Scene {
         this.win = this.add.sprite(484 / 2, 272 / 2, "win");
         this.win.setOrigin(0.5, 0.5);
         this.win.play("youWin");
+        this.winGame.play();
     }
 
     loseCondition() {
         this.lose = this.add.sprite(484 / 2, 272 / 2, "lose");
         this.lose.setOrigin(0.5, 0.5);
         this.lose.play("youLose");
+        this.gameOver.play();
     }
 
     update() {
