@@ -1,6 +1,6 @@
-window.onload = function(){
+window.onload = function () {
     var config = {
-        width: 484,             
+        width: 484,
         height: 272,
         backgroundColor: '000000',
         scene: [Scene1, Scene2],

@@ -68,8 +68,6 @@ class Scene1 extends Phaser.Scene {
         });
 
         this.load.audio("kmhmh", ["assets/audio/kmehameha.mp3"]);
-
-        this.load.audio("soundtrack",["assets/audio/DB.ogg"])
     }
 
     create() {
