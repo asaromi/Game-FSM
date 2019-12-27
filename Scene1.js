@@ -150,13 +150,16 @@ class Scene1 extends Phaser.Scene {
         this.gameStart.play("openingGame");
 
         this.backSound = this.sound.add("soundtrack");
+        this.backSound.play();
     }
 
     update(){
+        // this.backSound = this.sound.add("soundtrack");
+        
         if(Phaser.Input.Keyboard.JustDown(this.spacebare)){
-            this.backSound.play();
             this.scene.start("playGame");
             console.log("Game Start");
+            
         }
     }
 }
