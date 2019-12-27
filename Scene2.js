@@ -3,6 +3,7 @@ class Scene2 extends Phaser.Scene {
         super("playGame");
         var superPlayer = false;
         var posXM = 0, posYM = 0, posXS = 0, posYS = 0;
+        var win = false;
     }
 
     create() {
@@ -14,16 +15,10 @@ class Scene2 extends Phaser.Scene {
         this.monster.setOrigin(0, 0);
 
         this.ship1 = this.add.sprite(0, 272 * 4 / 5, "ship1");
-
-        this.ship1.setOrigin(1, 0);
-
         this.ship2 = this.add.sprite(0, 272 / 5, "ship2");
-
         this.ship2.flipY = true;
-        this.ship2.setOrigin(1, 0);
-
         this.ship3 = this.add.sprite(256 / 8, 272 / 2, "ship3");
-        this.ship3.setOrigin(1, 0);
+        
 
         this.enemies = this.physics.add.group();
         this.enemies.add(this.ship1);
@@ -63,14 +58,15 @@ class Scene2 extends Phaser.Scene {
         this.ship3.setInteractive();
         this.input.on('gameobjectup', this.destroyShip, this);
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-        this.shiftKey.on('down', this.destroyMonster, this);
+        
         // this.add.text(20, 20, "Playing game", {
         //     font: "25px Arial",
         //     fill: "yellow"
         // });
 
         this.physics.add.overlap(this.player, this.enemies, function (player, enemies) {
-            player.destroy();
+            this.super.x = 1000;
+            this.player.destroy();
             this.loseCondition();
         }, null, this);
 
@@ -117,6 +113,7 @@ class Scene2 extends Phaser.Scene {
         if (this.super.setCollideWorldBounds != true) {
             var posA = this.player.x;
             var posB = this.player.y;
+            this.player.x = -1000;
             this.player.destroy();
 
             this.super.x = posA;
@@ -153,10 +150,9 @@ class Scene2 extends Phaser.Scene {
             this.shootFire(this.fire);
 
         } else if (!this.superPlayer) {
-            console.log("Berhasil, membuat player baru");
             this.callSuperBack();
-
             this.winCondition();
+            this.win = true;
         }
     }
 
@@ -174,7 +170,10 @@ class Scene2 extends Phaser.Scene {
             } else if (this.cursorKeys.down.isDown) {
                 this.player.setVelocityY(100);
             }
-        } else if (this.superPlayer) {
+        } else if (this.superPlayer || this.win) {
+            if(this.superPlayer){
+                console.log("Press Shift to Use Special Skill and Destroy Monster");
+            }
             if (this.cursorKeys.right.isDown) {
                 this.super.setVelocityX(100);
                 console.log("Superman : " + this.super.x + "; " + this.super.y);
@@ -214,8 +213,9 @@ class Scene2 extends Phaser.Scene {
         // }
         this.moveMonster(1);
         if (this.monster.x == 186 && this.super.x < 0) {
-            console.log("Press Space Bar to Get Super Power. And go to Left to kill Monster");
+            console.log("Press Space Bar to Get Super Power");
             if (Phaser.Input.Keyboard.JustDown(this.spacebare)) {
+                this.shiftKey.on('down', this.destroyMonster, this);
                 console.log("Fire!");
                 this.changePlayer();
             }
