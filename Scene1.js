@@ -146,9 +146,6 @@ class Scene1 extends Phaser.Scene {
         this.gameStart.setOrigin(0.5,0.5);
 
         this.gameStart.play("openingGame");
-
-        this.backSound = this.sound.add("soundtrack");
-        this.backSound.play();
     }
 
     update(){
